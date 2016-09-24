@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/common.css"/>
+		<link rel="stylesheet" type="text/css" href="css/animate.min.css"/>
+		<link rel="stylesheet" type="text/css" href="css/swiper-3.3.1.min.css"/>
+		
+		<style type="text/css">
+			body,html{
+				width: 100%;
+				height: 100%;
+				background: #f1f1f1;
+			}
+			
+			.swiper-container{
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+			}
+			.swiper-wrapper{
+				-webkit-box-flex: 1;
+			}
+			
+			/*地图*/
+			#map{
+				width: 100%;
+				height: 100%;
+				position: relative;
+				left: 0;
+				top: 0;
+				z-index: 9999;
+				display: none;
+				opacity: 0;
+			}
+			#map .back_header{
+				width: 100%;
+				height: 2.5rem;
+				background: #f2f2f2;
+				position: fixed;
+				left: 0;
+				top: 0;
+				text-align: center;
+				line-height: 2.5rem;
+				border: 1px solid #ccc;
+				font-size: 0.8rem;
+				color: #3b3b3b;
+				font-family: Helvetica,Arial,"Helvetica Neue","Droid Sans","Heiti SC","Microsoft YaHei",sans-serif;
+			}
+			#map .back_header .back{
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 2.5rem;
+				height: 2.5rem;
+				background: url(img/722c3143c99b60fc4eac10335dfc1534.gif) no-repeat;
+				background-size: 100% 100%;
+			}
+			
+			/*音乐icon*/
+			#music .music_con{
+				width: 1.1rem;
+				height: 1.1rem;
+				background: url(img/css_sprite01.png) no-repeat;
+				background-size: 300%;
+				position: fixed;
+				top: 1rem;
+				right: 1rem;
+				z-index: 99;
+				animation: play1 1s linear both infinite;
+			}
+			#music .music_con.close{
+				animation: none;
+			}
+			#music_alert{
+				display: none;
+				position: absolute;
+				right: 2.3rem;
+				top: 1.15rem;
+				font-weight: bold;
+				font-size: 0.5rem;
+				color: #fff;
+				z-index: 9999;
+			}
+			#music_alert.on{
+				display: block;
+			}
+			
+			@keyframes play1{
+				from{ transform: rotateZ(0);}
+				to{ transform: rotateZ(-360deg);}
+			}
+			/*箭头*/
+			#up{
+				width: 1.25rem;
+				height: 0.7rem;
+				position: fixed;
+				left: 50%;
+				top: 50%;
+				margin-left: -0.625rem;
+				margin-top: 12rem;
+				z-index: 99;
+				animation: play 1.4s linear both infinite;;
+			}
+			#up span{
+				display: block;
+				width: 100%;
+				height: 100%;
+				background: url(img/units-icons.png) no-repeat -1.5rem -0.3rem;
+				background-size: 340%;
+			}
+			/*page*/
+			.swiper-slide,.swiper-container,.swiper-wrapper{ width: 100%; height: 100%;}
+			
+			.swiper-slide{
+				width: 100%;
+				height: 100%;
+			}
+			#page1{
+				background: url(img/f77efa4b-0d95-433f-9e7e-4ed77f924fdb.jpg) no-repeat -1rem;
+				background-size: 113%;
+			}
+			#page1 .name{
+				width: 7.1rem;
+				height: 1.65rem;
+				background: url(img/da7eb7c6-3900-407a-b04f-9bed8c24bda9.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -3.55rem;
+				margin-top: -3.75rem;
+			}
+			#page1 .name span{
+				position: absolute;
+				color: #fff;
+				font-size: 1rem;
+				top: -0.2rem;
+			}
+			#page1 .name .name_l{
+				left: 1.3rem;
+			}
+			#page1 .name .name_r{
+				right: 0.7rem;
+			}
+			#page1 .person{
+				width: 10.15rem;
+				height: 7.65rem;
+				background: url(img/b0116972-8afd-41bb-90d7-6f560d2f7b08.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -4.25rem;
+				margin-top: -1rem;
+			}
+			#page1 .zi{
+				width: 12.1rem;
+				height: 1.85rem;
+				background: url(img/e4f6d7be-635a-4423-b0e4-f857746757cf.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -6.05rem;
+				margin-top: 7.725rem;
+			}
+			
+			#page2{
+				background: url(img/74129717-77f6-43b6-9f55-6db5f99a0350.jpg) no-repeat center;
+				background-size: 113%;
+			}
+			
+			#page2 .title{
+				width: 10.9rem;
+				height: 3.65rem;
+				background: url(img/5fab71c6-eb5b-4091-87c7-604fb7962eaf.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -5.45rem;
+				margin-top: -9.5rem;
+			}
+			
+			#page2 .xuanyan{
+				width: 5.5rem;
+				height: 3.1rem;
+				background: url(img/68c88359-7824-4bde-9385-f2f6cb68eb1b.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -2.75rem;
+				margin-top: -5rem;
+			}
+			
+			#page2 .zi{
+				width: 12.75rem;
+				height: 9.1rem;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -6.375rem;
+				
+			}
+			#page2 .zi span{
+				display: block;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				font-size: 0.6rem;
+				color: #fff;
+				line-height:1.4rem;
+				text-align: center;
+			}
+			
+			#page3,#page4,#page5{
+				background: rgb(231, 45, 61);
+			}
+			
+			#page3 .title{
+				width: 10.4rem;
+				height: 10.05rem;
+				background: url(img/b1eb57ed-bba2-4e11-b851-04c85ced9911.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -5.2rem;
+				margin-top: -10rem;
+			}
+			
+			#page3 .icon{
+				width: 9rem;
+				height: 1.75rem;
+				background: url(img/b8db7872-0e27-46df-b580-7230dddb3ade.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -4.5rem;
+				margin-top: 1rem;
+			}
+			
+			#page3 .zi{
+				width: 8.5rem;
+				height: 2.1rem;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				font-size: 0.7rem;
+				color: #fff;
+				line-height:1rem;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -3.5rem;
+				margin-top: 5rem;
+			}
+			#page3 .zi span{
+				display: block;
+			}
+			
+			#page3 .fot{
+				width: 8.4rem;
+				height: 1.25rem;
+				background: url(img/a1c2997f-35e1-4c94-adf7-067ee3bb1af7.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -4.2rem;
+				margin-top: 8rem;
+			}
+			
+			#page4 .map{
+				width: 12.25rem;
+				height: 9.05rem;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -6.125rem;
+				margin-top: -10rem;
+			}
+			
+			#page4 .point{
+				width: 2.2rem;
+				height: 3.3rem;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -1.1rem;
+				margin-top: -8rem;
+			}
+			#page4 .map img,#page4 .point img{
+				width: 100%;
+				height: 100%;
+			}
+			
+			#page4 .point_zi{
+				width: 9.05rem;
+				height: 1.15rem;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -4rem;
+				margin-top: -4.7rem;
+			}
+			#page4 .point_zi a{
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				font-size: 0.65rem;
+				color: #fff;
+			}
+			
+			#page4 .name{
+				width: 100%;
+				text-align: center;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				font-size: 1rem;
+				color: #fff;
+				line-height:1rem;
+				position: absolute;
+				top: 50%;
+				margin-top: 1rem;
+			}
+			
+			#page4 .time{
+				width: 100%;
+				text-align: center;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				font-size: 0.7rem;
+				color: #fff;
+				line-height:1rem;
+				position: absolute;
+				top: 50%;
+				margin-top: 2.5rem;
+			}
+			
+			#page4 .tel1,#page4 .tel2{
+				width: 12.55rem;
+				height: 2.15rem;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -6.275rem;
+			}
+			
+			#page4 .tel1{
+				background: #6ebdd7;
+				margin-top: 5.5rem;
+			}
+			#page4 .tel2{
+				background: #f86f7a;
+				margin-top: 8.2rem;
+			}
+			
+			#page4 .tel1 span,#page4 .tel2 span{
+				display: block;
+				text-align: center;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				font-size: 0.7rem;
+				line-height: 2.15rem;
+				color: #fff;
+			}
+			
+			#page4 .tel1 .icon,#page4 .tel2 .icon{
+				display: block;
+				width: 3.2rem;
+				height: 3rem;
+				background: url(img/cd5c40b8-5d1c-4b67-80bf-0ffc6232daa4.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 0;
+				top: -0.5rem;
+			}
+			
+			#page5 .person{
+				width: 9.6rem;
+				height: 6.9rem;
+				background: url(img/9da84a94-6d14-44c7-85d9-f567bfe25c01.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -4.8rem;
+				margin-top: -10rem;
+			}
+			
+			#page5 .zhufu{
+				width: 15.3rem;
+				height: 9.95rem;
+				background: url(img/b580dccb-d717-46a7-97d2-b1fdad22adf3.png) no-repeat;
+				background-size: 100%;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -7.65rem;
+				margin-top: -3rem;
+			}
+			
+			#page5 .rotate{
+				width: 11.6rem;
+				height: 3.1rem;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -5.4rem;
+				margin-top: 7.5rem;
+			}
+			#page5 .rotate img{
+				width: 100%;
+				height: 100%;
+			}
+			
+			@-webkit-keyframes play {
+				0% {
+					opacity: 0;
+					-webkit-transform: translate3d(0, 100%, 0);
+					transform: translate3d(0, 100%, 0)
+				}
+				75%{
+					opacity: 1;
+					-webkit-transform: translate3d(0, 50%, 0);
+					transform: translate3d(0, 50%, 0)
+				}
+				100% {
+					opacity: 0;
+					-webkit-transform: none;
+					transform: none
+				}
+			}
+			
+			@keyframes play {
+				0% {
+					opacity: 0;
+					-webkit-transform: translate3d(0, 100%, 0);
+					-ms-transform: translate3d(0, 100%, 0);
+					transform: translate3d(0, 100%, 0)
+				}
+				50%{
+					opacity: 1;
+					-webkit-transform: translate3d(0, 50%, 0);
+					-ms-transform: translate3d(0, 50%, 0);
+					transform: translate3d(0, 50%, 0)
+				}
+				100% {
+					opacity: 0;
+					-webkit-transform: none;
+					-ms-transform: none;
+					transform: none
+				}
+			}
+			
+			
+			/*祝福墙*/
+			#mask{
+				width: 100%;
+				height: 100%;
+				background: rgba(0,0,0,0.6);
+				position: absolute;
+				left: 0;
+				top: 0;
+				z-index: 9999;
+			}
+			#mask .BlessingWall{
+				width: 15.2rem;
+				height: 20rem;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -7.6rem;
+				margin-top: -6.5rem;
+				border: 1px solid #f60;
+			}
+			#mask .BlessingWall .header{
+				width: 100%;
+				height: 2.2rem;
+				background: rgb(231, 45, 61);
+				position: relative;
+			}
+			#mask .BlessingWall .header span{
+				position: absolute;
+				width: 1.1rem;
+				height: 1.1rem;
+				top: 50%;
+				margin-top: -0.55rem;
+			}
+			#mask .BlessingWall .header .icon_w{
+				background: url(img/words_btn_02.png) no-repeat;
+				background-size: 100%;
+				left: 0.8rem;
+			}
+			#mask .BlessingWall .header .icon_d{
+				background: url(img/words_btn_03.png) no-repeat;
+				background-size: 100%;
+				right: 0.8rem;
+			}
+			
+			#mask .BlessingWall .header h3{
+				width: 100%;
+				height: 100%;
+				font-size: 1rem;
+				color: #fff;
+				text-align: center;
+				line-height: 2.2rem;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				font-weight: normal;
+			}
+			#mask .BlessingWall .content{
+				width: 100%;
+				height: 17.875rem;
+				background: #f2f2f0;
+				overflow-y: auto;
+				overflow-x: hidden;
+			}
+			#mask .BlessingWall .content .con_form{
+				width: 14rem;
+				padding: 0.5rem 0.6rem 0;
+				margin: 0 auto 0.8rem;
+			}
+			#mask .BlessingWall .content .con_form .con{
+				position: relative;
+				margin-bottom: 0.375rem;
+			}
+			#mask .BlessingWall .content .con_form .con span{
+				position: absolute;
+				right: 0.3rem;
+				bottom: 0.2rem;
+				color: #c8cccc;
+				font-size: 0.5rem;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				transform: scale(0.8);
+			}
+			#mask .BlessingWall .content .con_form input,#mask .BlessingWall .content .con_form textarea{
+				width: 13.2rem;
+				border: 1px solid #e1e6e6;
+				font-size: 0.6rem;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				outline: medium;
+			}
+			#mask .BlessingWall .content .con_form .con .wall_txt{
+				height: 3.25rem;
+				padding: 0.375rem 0.375rem;
+			}
+			#mask .BlessingWall .content .con_form .name .wall_input{
+				height: 1.5rem;
+				padding: 0 0.375rem;
+			}
+			#mask .BlessingWall .content .wall_btn{
+				width: 14rem;
+				height: 1.5rem;
+				line-height: 1.5rem;
+				margin-top: 0.5rem;
+				font-size: 1rem;
+				color: #fff;
+				text-align: center;
+				border-radius: 0.15rem;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+				background: rgb(231, 45, 61);
+			}
+			#mask .BlessingWall .content .wall_btn span{
+				margin-right: 0.25rem;
+			}
+			#mask .BlessingWall .content .wall_btn img{
+				width: 0.7rem;
+				height: 0.7rem;
+				vertical-align: middle;
+			}
+			
+			#mask .BlessingWall .content .con_detail{
+				width: 100%;
+				min-height: 7.5rem;
+			}
+			#mask .BlessingWall .content .con_detail h3{
+				padding-bottom: 0.25rem;
+				margin: 0 0.6rem;
+				border-bottom: 1px solid #e1e5e5;
+				font-family: 'Microsoft Yahei',Tahoma,Helvetica,Arial,sans-serif;
+			}
+			#mask .BlessingWall .content .con_detail h3 span{
+				font-size: 0.7rem;
+				color: #14191a;
+			}
+			
+			#mask .BlessingWall .content .con_detail ul li{
+				padding: 0.3rem 1.125rem;
+			}
+			#mask .BlessingWall .content .con_detail .detail-item:nth-child(2n+1){
+				background: #f2f2f0;
+			}
+			#mask .BlessingWall .content .con_detail .detail-item:nth-child(2n){
+				background: #f7f7f5;
+			}
+			#mask .BlessingWall .content .con_detail .detail-item h4{
+				overflow: hidden;
+				margin-bottom: 0.375rem;
+				font-weight: normal;
+			}
+			#mask .BlessingWall .content .con_detail .detail-item h4 span{
+				float: left;
+				color: #262626;
+				font-size: 0.6rem;
+			}
+			#mask .BlessingWall .content .con_detail .detail-item h4 strong{
+				float: right;
+				color: #afb2b2;
+				font-size: 0.55rem;
+				transform: scale(0.9)
+			}
+			#mask .BlessingWall .content .con_detail .detail-item p{
+				font-size: 0.6rem;
+				color: #646666;
+				line-height: 150%;
+			}
+			#warn{
+				width: 10rem;
+				position: fixed;
+				left: 50%;
+				top: 50%;
+				margin-left: -5rem;
+				background: #f48813;
+				display: none;
+				padding: 0.4rem 0;
+				border-radius: 0.3rem;
+				z-index: 999;
+				text-align: center;
+				color: #fff;
+			}
+			#warn.on{
+				display: block;
+			}
+			
+			#success{
+				width: 10rem;
+				position: fixed;
+				left: 50%;
+				top: 50%;
+				margin-left: -5rem;
+				background: #55e224;
+				display: none;
+				padding: 0.4rem 0;
+				border-radius: 0.3rem;
+				z-index: 998;
+				text-align: center;
+				color: #fff;
+			}
+			#success.on{
+				display: block;
+			}
+		</style>
+		<script type="text/javascript" src="js/jquery-1.11.3.js" ></script>
+		<script type="text/javascript" src="js/swiper-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/swiper.animate1.0.2.min.js" ></script>
+		<script type="text/javascript" src="js/rem.js" ></script>
+		
+		<script type="text/javascript">
+			$(function(){
+				function fixPagesHeight() {
+					$('.swiper-slide,.swiper-container').css({
+						height: $(window).height(),
+					})
+				}
+				$(window).on('resize', function() {
+					fixPagesHeight();
+				})
+				fixPagesHeight();
+				
+				
+				var mySwiper = new Swiper('.swiper-container', {
+				
+				    direction: 'vertical',
+					mousewheelControl: true,
+					watchSlidesProgress: true,
+					onInit: function(swiper) {
+						swiper.myactive = 0;
+						swiperAnimateCache(swiper); //隐藏动画元素 
+			    		swiperAnimate(swiper); //初始化完成开始动画
+					},
+					onProgress: function(swiper) {
+						for (var i = 0; i < swiper.slides.length; i++) {
+							var slide = swiper.slides[i];
+							var progress = slide.progress;
+							var translate, boxShadow;
+				
+							translate = progress * swiper.height * 0.8;
+							scale = 1 - Math.min(Math.abs(progress * 0.2), 1);
+							boxShadowOpacity = 0;
+				
+							slide.style.boxShadow = '0px 0px 10px rgba(0,0,0,' + boxShadowOpacity + ')';
+				
+							if (i == swiper.myactive) {
+								es = slide.style;
+								es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = 'translate3d(0,' + (translate) + 'px,0) scale(' + scale + ')';
+								es.zIndex=0;
+				
+				
+							}else{
+								es = slide.style;
+								es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform ='';
+								es.zIndex=1;
+								
+							}
+				
+						}
+				
+					},
+				
+				
+					onTransitionEnd: function(swiper, speed) {
+						for (var i = 0; i < swiper.slides.length; i++) {
+						//	es = swiper.slides[i].style;
+						//	es.webkitTransform = es.MsTransform = es.msTransform = es.MozTransform = es.OTransform = es.transform = '';
+				
+						//	swiper.slides[i].style.zIndex = Math.abs(swiper.slides[i].progress);
+				
+							
+						}
+				
+						swiper.myactive = swiper.activeIndex;
+				
+					},
+					onSetTransition: function(swiper, speed) {
+				
+						for (var i = 0; i < swiper.slides.length; i++) {
+							//if (i == swiper.myactive) {
+				
+								es = swiper.slides[i].style;
+								es.webkitTransitionDuration = es.MsTransitionDuration = es.msTransitionDuration = es.MozTransitionDuration = es.OTransitionDuration = es.transitionDuration = speed + 'ms';
+							//}
+						}
+				
+					},
+					
+					onSlideChangeEnd: function(swiper){ 
+					    swiperAnimate(swiper); //每个slide切换结束时也运行当前slide动画
+					    if(swiper.slides[4].progress == 0){
+					    	$("#up").css("display","none");
+					    }else{
+					    	$("#up").css("display","block");
+					    }
+					}
+				
+				});
+				
+				/*点击祝福墙*/
+				$("#song").on("touchend",function(){
+					$("#mask").css("display","block").animate({"opacity":"1"});
+					$("#BlessingWall").animate({"marginTop":"-6.5rem"});
+					
+				})
+				$("#delet").on("touchend",function(){
+					$("#BlessingWall").animate({"marginTop":"1000px"});
+					$("#mask").animate({"opacity":"0"},function(){
+						$(this).css("display","none");
+					});
+				})
+				$("#write").on("touchend",function(evt){
+					var e = evt || window.event;
+					e.preventDefault();
+					$(".wall_txt").focus();
+				})
+				
+				var timer = null;
+				
+				$("#submit").on("touchend",function(){
+					clearTimeout(timer);
+					if($(".wall_txt").val() == ""){
+						$("#warn").addClass("on").html("说点什么吧！");
+						timer = setTimeout(function(){
+							$("#warn").removeClass("on");
+						},2000);
+					}else if($(".wall_txt").val() != ""){
+						if($(".wall_input").val() == ""){
+							$("#warn").addClass("on").html("请留下您的大名吧！");
+							timer = setTimeout(function(){
+								$("#warn").removeClass("on");
+							},2000);
+						}else if($(".wall_input").val() != ""){
+							$("#success").addClass("on").html("发表成功！");
+							setTimeout(function(){
+								$("#success").removeClass("on");
+							},2000);
+							var oh = "<h4><span>"+$(".wall_input").val()+"</span><strong>刚刚发表</strong></h4>";
+							var op = "<p>"+$(".wall_txt").val()+"</p>";
+							var oli = "<li class='detail-item'>"+oh+op+"</li>";
+							$(".con_detail ul").prepend(oli);
+							$(".wall_txt").val("");
+						}
+					}
+				})
+				
+				//播放器
+				var aud = document.getElementById("aud");
+				var music_con = $(".music_con");
+				
+				var timer1 = null;
+				
+				$(music_con).on("touchend",function(){
+					clearTimeout(timer1);
+					if(aud.paused){
+						aud.play();
+						$(this).removeClass("close");
+						$("#music_alert").addClass("on").html("打开");
+						timer1 = setTimeout(function(){
+							$("#music_alert").removeClass("on");
+						},2000);
+					}else{
+						aud.pause();
+						$(this).addClass("close");
+						$("#music_alert").addClass("on").html("关闭");
+						timer1 = setTimeout(function(){
+							$("#music_alert").removeClass("on");
+						},2000);
+					}
+				})
+				
+				//地图跳转
+				$(".point_zi,.point").on("touchend",function(){
+					$("#map").css("display","block").animate({"opacity":"1"});
+				})
+				
+				$("#map .back_header .back").on("touchend",function(){
+					$("#map").animate({"opacity":"0"},function(){
+						$(this).css("display","none");
+					});
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<!--地图-->
+		<div id="map">
+			<header class="back_header">
+				<span class="back"></span>
+				<span>深圳福田香格里拉酒店</span>
+			</header>
+			<iframe src="html/map.html" width="100%" height="100%"></iframe>
+		</div>
+		<div id="music">
+			<div class="music_con" id="music_con"></div>
+			<audio id="aud" autoplay="autoplay" loop="loop" preload="preload">
+				<source id="sou" src="audio/网络歌手 久石让 Summer 钢琴曲.mp3" type="audio/mp3"></source>
+			</audio>
+			<div id="music_alert"></div>
+		</div>
+		
+		<div id="up">
+			<span></span>
+		</div>
+		
+		<div class="swiper-container">
+		    <div class="swiper-wrapper">
+		        <div class="swiper-slide" id="page1">
+					<div class="name">
+						<span class="name_l">Tom</span>
+						<span class="name_r">Mary</span>
+					</div>
+					<div class="person ani" swiper-animate-effect="bounceInDown" swiper-animate-duration="0.5s" swiper-animate-delay="0.3s"></div>
+					<div class="zi ani" swiper-animate-effect="zoomIn" swiper-animate-duration="0.5s" swiper-animate-delay="0.8s"></div>
+				</div>
+				<div class="swiper-slide" id="page2">
+					<div class="title ani" swiper-animate-effect="swing" swiper-animate-duration="0.8s" swiper-animate-delay="0"></div>
+					<div class="xuanyan ani" swiper-animate-effect="fadeIn" swiper-animate-duration="1s" swiper-animate-delay="1s"></div>
+					<div class="zi ani" swiper-animate-effect="fadeIn" swiper-animate-duration="1s" swiper-animate-delay="2s">
+						<span>一生就这么一次，</span>
+						<span>谈一场以结婚为目的的恋爱吧。</span>
+						<span>不再因为任性而不肯低头，</span>
+						<span>不再因为固执而轻言分手。</span>
+						<span>最后地坚信一次，一直走，就可以到白头。</span>
+						<span>惟愿这一生，执子之手，与子偕老。</span>
+						<span>你敢天长，我就敢地久。</span>
+					</div>
+				</div>
+				<div class="swiper-slide" id="page3">
+					<div class="title ani" swiper-animate-effect="flipInY" swiper-animate-duration="1s" swiper-animate-delay="0"></div>
+					<div class="icon ani" swiper-animate-effect="zoomIn" swiper-animate-duration="0.5s" swiper-animate-delay="1s"></div>
+					<div class="zi ani" swiper-animate-effect="zoomIn" swiper-animate-duration="0.5s" swiper-animate-delay="1.5s">
+						<span>深思熟虑之后我们决定</span>
+						<span>为爱情做出重要的延续</span>
+					</div>
+					<div class="fot ani" swiper-animate-effect="zoomIn" swiper-animate-duration="0.5s" swiper-animate-delay="2s"></div>
+				</div>
+				<div class="swiper-slide" id="page4">
+					<div class="map">
+						<a href="#"><img src="img/2151d987-aea5-409a-a677-4ada6155123c.png"/></a>
+					</div>
+					<div class="point ani" swiper-animate-effect="fot" swiper-animate-duration="5s" swiper-animate-delay="0s">
+						<a href="#"><img src="img/4b65b9da-1540-4a61-b836-4fca1eec9be8.png"/></a>
+					</div>
+					<div class="point_zi"><a href="#">中国 · 深圳 福田香格里拉酒店</a></div>
+					<div class="name">Tom & Mary</div>
+					<div class="time">2014年12月30日 12点</div>
+					<div class="tel1 ani" swiper-animate-effect="flipInX" swiper-animate-duration="1s" swiper-animate-delay="0s"><span class="icon"></span><span>15802000001</span></div>
+					<div class="tel2 ani" swiper-animate-effect="flipInX" swiper-animate-duration="1s" swiper-animate-delay="0.3s"><span class="icon"></span><span>15802000002</span></div>
+				</div>
+				<div class="swiper-slide" id="page5">
+					<div class="person ani" swiper-animate-effect="shake" swiper-animate-duration="1.2s" swiper-animate-delay="0"></div>
+					<div class="zhufu ani" swiper-animate-effect="zoomIn" swiper-animate-duration="0.5s" swiper-animate-delay="1.2s"></div>
+					<div class="rotate ani" swiper-animate-effect="flipInX" swiper-animate-duration="1s" swiper-animate-delay="1.7s" id="song">
+						<a href="#"><img src="img/7abafe60-df9f-44c0-9a3a-7b2355b89d91.png"/></a>
+					</div>
+				</div>
+		    </div>
+		</div>
+		
+		<!--弹出祝福框-->
+		<div id="mask" style="display: none; opacity: 0;">
+			<div class="BlessingWall" id="BlessingWall" style="margin-top: 1000px;">
+				<header class="header">
+					<span class="icon_w" id="write"></span>
+					<span class="icon_d" id="delet"></span>
+					<h3>祝福墙</h3>
+				</header>
+				<div class="content">
+					<div class="con_form">
+						<p class="con">
+							<textarea class="wall_txt" placeholder="请留下您祝福的话" maxlength="140"></textarea>
+							<span>限140字</span>
+						</p>
+						<p class="name">
+							<input type="text" class="wall_input" placeholder="请留下您的姓名" />
+						</p>
+						<p class="wall_btn" id="submit">
+							<span>发送</span>
+							<img src="img/words_icon_01.png"/>
+						</p>
+					</div>
+					<div class="con_detail">
+						<h3><span>最新留言</span></h3>
+						<ul></ul>
+					</div>
+				</div>
+				<div id="warn"></div>
+				<div id="success"></div>
+			</div>
+		</div>
+	</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
